@@ -363,6 +363,12 @@ annotations:
 ```
 
 
+Individual annotation mappings can set `active_style` to override the shared
+`display.active_style` while that annotation is selected. For example, the
+eccentricity contours use `active_style: {color: black}` so their lines and
+markers remain visible against the yellow threshold map. These overrides also
+apply when saved style preferences are loaded.
+
 #### `figures` (required)
 
 The `figures` section provides code for drawing the images that are to be used

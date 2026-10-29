@@ -242,21 +242,29 @@ annotations:
       - ["curvature", "vexpl"]
   # Isoecentricity contours:
   0.5 Degrees Eccentricity:
+    active_style:
+      color: black
     type: contour
     figure_grid:
       - ["eccen_0.5", "angle"]
       - ["eccen", "vexpl"]
   1.0 Degrees Eccentricity:
+    active_style:
+      color: black
     type: contour
     figure_grid:
       - ["eccen_1.0", "angle"]
       - ["eccen", "vexpl"]
   2.0 Degrees Eccentricity:
+    active_style:
+      color: black
     type: contour
     figure_grid:
       - ["eccen_2.0", "angle"]
       - ["eccen", "vexpl"]
   4.0 Degrees Eccentricity:
+    active_style:
+      color: black
     type: contour
     figure_grid:
       - ["eccen_4.0", "angle"]

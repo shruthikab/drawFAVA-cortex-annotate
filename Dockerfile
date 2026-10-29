@@ -98,12 +98,18 @@ RUN rm -rf /opt/conda/lib/python3.10/site-packages/backports && \
     rm -rf /opt/conda/lib/python3.10/site-packages/_distutils_hack && \
     rm -rf /opt/conda/lib/python3.10/site-packages/distutils-precedence.pth && \
     pip install build setuptools wheel --upgrade
+# The BLIS backend selected on ARM64 aborts during NumPy initialization.
+RUN mamba install -y -c conda-forge "libblas=*=*openblas"
 RUN git clone https://github.com/DIPlib/diplib.git /opt/diplib && \
     mkdir -p /opt/diplib/target && \
     cd /opt/diplib/target && \
-    cmake .. -DCMAKE_INSTALL_PREFIX=/opt/diplib && \
-    make -j check && \
-    make -j install && \
+    cmake .. -DCMAKE_INSTALL_PREFIX=/opt/diplib \
+        -DPYTHON_EXECUTABLE=/opt/conda/bin/python3.10 && \
+    make -j1
+# Cache compilation separately so test/install failures do not force a rebuild.
+RUN cd /opt/diplib/target && \
+    make -j1 check && \
+    make -j1 install && \
     make pip_install
 
 # Install collapsible cell extensions...

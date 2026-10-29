@@ -320,8 +320,8 @@ class TargetsConfig(ldict):
 Annotation = namedtuple(
     typename    = "Annotation",
     field_names = ( "type", "fixed_head", "fixed_tail", "figure_grid", 
-                    "style_options", "filter" ),
-    defaults    = ( "contour", None, None, None, {}, None )
+                    "style_options", "filter", "active_style" ),
+    defaults    = ( "contour", None, None, None, {}, None, {} )
 )
 
 
@@ -488,6 +488,7 @@ class AnnotationsConfig(dict):
         fixed_tail    = annotation_spec.get("fixed_tail", None)
         figure_grid   = annotation_spec.get("figure_grid", None)
         style_options = annotation_spec.get("style_options", {}) #TODO: I think this is unused
+        active_style  = annotation_spec.get("active_style", {})
         filter        = annotation_spec.get("filter", None)
         
         # Check that the annotation type is valid.
@@ -509,6 +510,12 @@ class AnnotationsConfig(dict):
         try: AnnotationState.fix_style(style_options)
         except RuntimeError as e: raise err(e) from e
 
+        # Annotation-specific overrides for the shared active drawing style.
+        if not isinstance(active_style, dict):
+            raise err("active_style must be a mapping.")
+        try: AnnotationState.fix_style(active_style)
+        except RuntimeError as e: raise err(e) from e
+
         # Check that the filter is a string or None.
         if filter is not None and not isinstance(filter, str):
             raise err(f"filter must be null or a Python code string.")
@@ -525,6 +532,7 @@ class AnnotationsConfig(dict):
             figure_grid   = figure_grid,
             style_options = style_options,
             filter        = filter,
+            active_style  = active_style,
         )
 
 

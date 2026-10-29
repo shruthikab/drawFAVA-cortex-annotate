@@ -187,6 +187,8 @@ class FigurePanel(ipw.HBox):
 
             # Get the style for this annotation.
             style = self.state.style(styletag) 
+            if self.active == annotation:
+                style = { **style, **self.annot_cfg[annotation].active_style }
 
             # If this annotation isn't visible, we can skip it also.
             if not style["visible"]: continue
